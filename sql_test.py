@@ -11,8 +11,8 @@ def select_pacs_exam_path_per_id(patient_id):
 	pass
 
 def select_id_list_from_sqls(TEST):
-	con_sqls = DAL.sqlserver('192.168.130.113','txkj','txkj')
-	sql = "select RIS_ID,CheckPart,CONVERT(varchar(100),EXAM_DATE,112) from v_TX_PACS where EXAM_DATE >= convert(varchar(8),getdate(),112) and (CheckPart like '%上腹%' or CheckPart like '%胸%' or CheckPart like '%全腹%') "
+	con_sqls = DAL.sqlserver('host','user','pwd')
+	sql = "select RIS_ID,CheckPart,CONVERT(varchar(100),EXAM_DATE,112) from VIEWS_NAME where EXAM_DATE >= convert(varchar(8),getdate(),112) and (CheckPart like '%上腹%' or CheckPart like '%胸%' or CheckPart like '%全腹%') "
 	rowcount, result = con_sqls.execute(sql)
 	con_sqls.close()
 	#Ris_list = [i[0] for i in result]
@@ -26,15 +26,15 @@ def select_id_list_from_sqls(TEST):
 	return Ris_list
 
 def select_path_from_db2(ris_list):
-	con_db2 = DAL.DB2('IPACSDB','192.168.130.66','50000','db2inst1','db2inst1')
+	con_db2 = DAL.DB2('database_name','host','port','user','pwd')
 	if con_db2:
 		Ris_list = ris_list
 		Patient_info_list = []
 		for ris_id in Ris_list:
-			sql = "select PATIENT_ID,SERIES_UID,to_char(STUDY_DATE,'yyyymmdd') from PACS.TX_PACS where PATIENT_ID = '{}' and to_char(STUDY_DATE,'yyyy-mm-dd') >= CURRENT DATE".format(ris_id)
+			sql = "select PATIENT_ID,SERIES_UID,to_char(STUDY_DATE,'yyyymmdd') from VIEW_NAME where PATIENT_ID = '{}' and to_char(STUDY_DATE,'yyyy-mm-dd') >= CURRENT DATE".format(ris_id)
 			result = con_db2.execute(sql)
 			if len(result) > 0:
-				root = '/media/tx-deepocean/Data/isilon.thyy.com/'
+				root = '/..../.../Data/isilon.thyy.com/'
 				series_list = [root+s[2]+'/CT/'+s[1] for s in result]
 				patient_info = [s[0],series_list]
 				Patient_info_list.append(patient_info)
@@ -45,14 +45,14 @@ def select_path_from_db2(ris_list):
 #------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 def sql_t():
-	con_db2 = DAL.DB2('IPACSDB','192.168.130.66','50000','db2inst1','db2inst1')
+	con_db2 = DAL.DB2('database_name','host','port','user','pwd')
 	if con_db2:
-		sql = "select PATIENT_ID,SERIES_UID,to_char(STUDY_DATE,'yyyymmdd') from PACS.TX_PACS where PATIENT_ID = '{}' and to_char(STUDY_DATE,'yyyy-mm-dd') >= CURRENT DATE".format('79006304')
+		sql = "select PATIENT_ID,SERIES_UID,to_char(STUDY_DATE,'yyyymmdd') from VIEW_NAME where PATIENT_ID = '{}' and to_char(STUDY_DATE,'yyyy-mm-dd') >= CURRENT DATE".format('79006304')
 		result = con_db2.execute(sql)
 		print result
 		Patient_info_list = []
 		if len(result) > 0:
-			root = '/media/tx-deepocean/Data/isilon.thyy.com/'
+			root = '/.../.../Data/isilon.thyy.com/'
 			series_list = [root+s[2]+'/CT/'+s[1] for s in result]
 			patient_info = [s[0],series_list]
 			Patient_info_list.append(patient_info)
@@ -63,9 +63,9 @@ def sql_t():
 	return Patient_info_list
 
 def sql_txt(patient_id):
-	con_sqls = DAL.sqlserver('192.168.130.113','txkj','txkj')
-	#sql = "select RIS_ID,CheckPart,REP_DESC,REP_RESULT,CONVERT(varchar(100),EXAM_DATE,112) from v_TX_PACS where EXAM_DATE >= convert(varchar(8),getdate(),112) and (CheckPart like '%上腹%' or CheckPart like '%胸%' or CheckPart like '%全腹%') and RIS_ID = {}".format(patient_id)
-	sql = "select RIS_ID,CheckPart,REP_DESC,REP_RESULT,CONVERT(varchar(100),EXAM_DATE,112) from v_TX_PACS where EXAM_DATE >= convert(varchar(8),getdate(),112) and RIS_ID = '{}'".format(patient_id)
+	con_sqls = DAL.sqlserver('host','user','pwd')
+	#sql = "select RIS_ID,CheckPart,REP_DESC,REP_RESULT,CONVERT(varchar(100),EXAM_DATE,112) from VIEW_NAME where EXAM_DATE >= convert(varchar(8),getdate(),112) and (CheckPart like '%上腹%' or CheckPart like '%胸%' or CheckPart like '%全腹%') and RIS_ID = {}".format(patient_id)
+	sql = "select RIS_ID,CheckPart,REP_DESC,REP_RESULT,CONVERT(varchar(100),EXAM_DATE,112) from VIEW_NAME where EXAM_DATE >= convert(varchar(8),getdate(),112) and RIS_ID = '{}'".format(patient_id)
 	rowcount, result = con_sqls.execute(sql)
 	con_sqls.close()
 	print show_china(result)
@@ -92,7 +92,7 @@ def sql_txt(patient_id):
 
 
 def get_txt():
-	root = '/media/tx-deepocean/Data/DICOMS/test'
+	root = '/.../.../Data/DICOMS/test'
 	patient_id_list = os.listdir(root)[:104]
 	print patient_id_list
 	print len(patient_id_list)

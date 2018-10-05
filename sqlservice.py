@@ -32,11 +32,7 @@ def select_id_list_from_study_status(TEST):
 
 
 def insert_patient_information(patient):
-    """
-    推想DB:插入病人基本信息
-    :param patient: 病人信息
-    :return: rowcount 受影响行数
-    """
+
     #orc = DAL.Oracle(user, pwd, ip, port, database)
     #sql = ""
     #rowcount,result = orc.execute(sql)
@@ -44,14 +40,10 @@ def insert_patient_information(patient):
     #return boolean
 
 def select_history_information(patient,TEST):
-    """
-    推想DB:查询当前病人历史信息
-    :param patient:病人信息
-    :return: patient_history 病人历史信息 list
-    """
+
     if TEST:
         return [[patient[0] + "1", ""], [patient[0] + "2", ""], [patient[0] + "3", ""]]
-    #msql = DAL.Mysql(ip='127.0.0.1', port='3306', user='txkj', pwd='txkj', database='txdata')
+    #msql = DAL.Mysql()
     #sql = ""
     #rowcount,result = msql.execute(sql)
     #orc.close()
@@ -59,24 +51,16 @@ def select_history_information(patient,TEST):
 
 
 def update_patient_predict_information(predict):
-    """
-    推想DB:更新病人预测信息
-    :param predict: 预测结果
-    :return: rowcount 受影响行数
-    """
-    #msql = DAL.Mysql(ip='127.0.0.1', port='3306', user='txkj', pwd='txkj', database='txdata')
+
+    #msql = DAL.Mysql()
     #sql = ""
     #rowcount,result = msql.execute(sql)
     #orc.close()
     #return rowcount
 
 def select_patient_rows(patient_id):
-    """
-    推想DB:验证数据是否存在当前病人
-    :param patient_id: 影像号
-    :return: rowcount 受影响行数
-    """
-    #msql = DAL.Mysql(ip='127.0.0.1', port='3306', user='txkj', pwd='txkj', database='txdata')
+
+    #msql = DAL.Mysql()
     #sql = ""
     #rowcount,result = msql.execute(sql)
     #orc.close()

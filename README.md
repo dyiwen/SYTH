@@ -1,4 +1,4 @@
-智能辅助阅片-接口（对接医院）
+dicom数据拉取清洗发送接口
 ===
  * tools/ 工具集合
  * reset.py 重置/生成配置文件（./server.conf）
@@ -25,22 +25,24 @@ $ python multi_server.py
 测试无误后需要修改：    
     TEST=True改为False    
 
+（注意地方）
+* DAL.py 针对性封装类sqlserver和db2两个库，由sql_test.py调用
+    * sql_test.py 查询两库视图，数据清洗后返回
 
-常修改地方（注意地方）
 * multi_server.py  
     * function: service()
-        * 选择合适获取DICOM文件的方式 或 本地编写function；
-        * file_number 设置预测最小文件个数；
-        * Dicomfilter().CT() 根据实际情况编写过滤条件
+        * 调用pulldata选择合适拉取方式（ftp/磁盘挂载/gdcm/wget/scp） 或 本地编写function；
+        * file_number 返回拉取后的文件数量
     * function: main() 
-        * 可选择开启历史前后片对比功能，history_patient_list[:] 默认获取所有历史，若只想获取最新一条检查 history_patient_list[:1] 
+        * 数据清洗函数 
     * function: Multi() 
-        * cpuCount= 改成4或者6，默认是CPU支持的最大进程数       
-    * channelCount 对应多通道的DLSERVER
-    
-* sqlserver.py 根据医院数据库结构本地编写SQL     
-* server.conf  server_sleep 为每轮之间暂停的时间，可根据实际需要修改，建议15-60之间    
-* constants.py  取消注释out函数中的print用于观察     
- 
+        * 分配进程
+        * cpuCount= 改成4或者6，默认根据CPU核数CPUCOUNT()分配最大进程数，一般为12       
+    * channelCount 对应多通道的REDIS的预测频道
 
+* pulldata.py 数据拉取过滤清洗等处理主函数，该项目由FTP拉去更改自磁盘挂载，进行拉取-解压图像-清洗-改名-脱敏-格式化保存等操作
+* server.conf  常用参数配置文件，server_sleep 为每轮之间暂停的时间，可根据实际需要修改，建议15-60之间    
+* constants.py  相关日志配置信息，out,err,warn根据日志等级分别封装，取消注释out函数中的print用于观察     
+ 
+* /log/ 主日志目录
 

@@ -88,7 +88,7 @@ def service(redis_client, channel, patient,TEST):    #patient : ['',[,,,,]]
             #----------------------------------------------------------------------------------------------
             if True:
                 for dicompath in dicompath_list:                                             # .....local/date/CT/serid
-                    out_path = os.path.join(outpath,dicompath.split('/')[7])               #/media/tx-deepocean/Data/DICOMS/CT/pid/serid
+                    out_path = os.path.join(outpath,dicompath.split('/')[7])               #/..../.../Data/DICOMS/CT/pid/serid
                     file_number = cp_mount(dicompath, out_path)  # copy 挂载PACS存储
                     #out('{}脱敏完成'.format(os.path.join(out_path.split('/')[-2],out_path.split('/')[-1])))
                     if os.path.exists(out_path) and file_number > 0:
