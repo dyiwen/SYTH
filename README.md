@@ -43,6 +43,6 @@ $ python multi_server.py
 * pulldata.py 数据拉取过滤清洗等处理主函数，该项目由FTP拉去更改自磁盘挂载，进行拉取-解压图像-清洗-改名-脱敏-格式化保存等操作
 * server.conf  常用参数配置文件，server_sleep 为每轮之间暂停的时间，可根据实际需要修改，建议15-60之间    
 * constants.py  相关日志配置信息，out,err,warn根据日志等级分别封装，取消注释out函数中的print用于观察     
- 
+* dcmlib 脱敏包，对图像敏感信息进行脱敏处理
 * /log/ 主日志目录
 
